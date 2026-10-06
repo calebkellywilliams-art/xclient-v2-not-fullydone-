@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "xclient",
+  "version": "${version}",
+  "name": "XClient",
+  "description": "Singleplayer utility client: HUD, ESP, X-ray, Reach.",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.example.xclient.XClient"
+    ]
+  },
+  "mixins": [
+    "xclient.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "icon": "assets/xclient/icon.png"
+}
