@@ -1,5 +1,5 @@
 name: Build XClient
-
+./gradlew build 
 on:
   workflow_dispatch:
   push:
