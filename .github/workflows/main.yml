@@ -1,75 +1,33 @@
-package com.example.xclient;
+name: Build XClient
 
-public abstract class Module {
-    private final String name;
-    private boolean enabled;
+on:
+  push:
+  workflow_dispatch:
 
-    public Module(String name) {
-        this.name = name;
-        this.enabled = false;
-    }
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-    public String getName() {
-        return name;
-    }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    public boolean isEnabled() {
-        return enabled;
-    }
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
 
-    public void toggle() {
-        enabled = !enabled;
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14'
 
-        if (enabled) {
-            onEnable();
-        } else {
-            onDisable();
-        }
-    }
+      - name: Build
+        run: gradle build
 
-    public void setEnabled(boolean enabled) {
-        if (this.enabled == enabled) {
-            return;
-        }
-
-        this.enabled = enabled;
-
-        if (enabled) {
-            onEnable();
-        } else {
-            onDisable();
-        }
-    }
-
-    protected void onEnable() {
-    }
-
-    protected void onDisable() {
-    }
-
-    public void onTick() {
-    }
-}
-package com.example.xclient;
-
-public class Setting<T> {
-    private final String name;
-    private T value;
-
-    public Setting(String name, T value) {
-        this.name = name;
-        this.value = value;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public T getValue() {
-        return value;
-    }
-
-    public void setValue(T value) {
-        this.value = value;
-    }
-}
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: XClient-1.21.11
+          path: build/libs/*.jar
